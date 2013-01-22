@@ -18,7 +18,7 @@ use Crypt::SSLeay;
 
 my $num_args = $#ARGV + 1;
 if ($num_args != 2) {
-    print "usage: ./check_balance.pl <92-number> <pin>\n";
+    print "usage: ./wcu_balance.pl <92-number> <pin>\n";
     exit;
 }
 
