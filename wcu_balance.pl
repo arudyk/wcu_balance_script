@@ -3,7 +3,7 @@
 # 
 # author:  Andriy Rudyk (arudyk.dev@gmail.com)
 # date:    22.1.2013
-# version: 1.0 alpha
+# version: 1.1 beta
 #
 # wcu_balance.pl <92-number> <PIN>
 #
@@ -11,7 +11,8 @@
 #
 
 use strict;
-use Crypt::SSLeay;
+use warnings;
+
 use HTTP::Cookies;
 use HTML::TreeBuilder;
 use Term::ReadKey;
@@ -38,10 +39,6 @@ sub read_passwd {
     return $pass;
 }
 
-sub check_settings {
-    print "stub";
-}
-
 sub login_get_page {
     my $user_agent = WWW::Mechanize->new();
     $user_agent->cookie_jar(HTTP::Cookies->new());
@@ -65,9 +62,19 @@ sub parse_page {
     $tree->parse_content($_[0]);
     my @table_items = $tree->look_down('_tag' => 'strong');
 
+    #foreach (@table_items) {
+    #    print $_->content_list;
+    #    print "\n";
+    #}
     shift @table_items;
-    foreach (@table_items) {
-        print $_->content_list;
+    while (my $element = shift @table_items) {
+        if (grep /Balance/, $element->content_list) {
+            $element = shift @table_items;
+        }
+        print $element->content_list;
+        print " => ";
+        $element = shift @table_items;
+        print $element->content_list;
         print "\n";
     }
 
