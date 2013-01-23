@@ -1,9 +1,9 @@
 #!/usr/bin/perl -w
 
-# 
+#
 # author:  Andriy Rudyk (arudyk.dev@gmail.com)
 # date:    22.1.2013
-# version: 1.2 beta pre-release
+# version: 1.3 RC
 #
 # wcu_balance.pl <92-number> <PIN>
 #
@@ -20,16 +20,25 @@ use WWW::Mechanize;
 
 my $usage_string = "usage: ./wcu_balance.pl <92-number>\n";
 my $mycat_url    = "http://www.wcu.edu/11407.asp";
+my $user_agent   = "Mozzila/5.0";
 
+#
+# Checks the arguemts for the apropriate number and makes sure "92" is
+# contained within the 92-number.
+#
 sub check_args {
     my $num_args = $#ARGV + 1;
     if ($num_args != 1 || $ARGV[0] !~ m/92/) {
         print $usage_string;
-        print "Make sure the value you entered is a valid WCU 92 number!\n";
         exit;
     }
 }
 
+#
+# Reads in a user password withour echoing characters (for security measures).
+#
+# returns password as a string.
+#
 sub read_passwd {
     print "Enter your MyCat pin: ";
     ReadMode('noecho'); # dont echo password
@@ -39,13 +48,21 @@ sub read_passwd {
     return $pass;
 }
 
+#
+# Logs-in into the website with the provided credentials (given by arguments).
+#
+# param1 username (92-number)
+# param2 password (PIN)
+#
+# returns the html page after login.
+#
 sub login_get_page {
-    my $user_agent = WWW::Mechanize->new();
-    $user_agent->cookie_jar(HTTP::Cookies->new());
-    $user_agent->agent('Mozilla/5.0');
-    $user_agent->get("http://www.wcu.edu/11407.asp");
+    my $mech = WWW::Mechanize->new();
+    $mech->cookie_jar(HTTP::Cookies->new());
+    $mech->agent($user_agent);
+    $mech->get($mycat_url);
 
-    my $page = $user_agent->submit_form(
+    my $page = $mech->submit_form(
         form_number => 3,
         fields => {
             id => $_[0],
@@ -57,6 +74,11 @@ sub login_get_page {
     return $page->content();
 }
 
+#
+# Parses the page for account information.
+#
+# param 1 html page
+#
 sub parse_page {
     my $tree = HTML::TreeBuilder->new();
     $tree->parse_content($_[0]);
@@ -78,7 +100,12 @@ sub parse_page {
     $tree->delete;
 }
 
-sub main() {
+#
+# Runs the program. First checks arguments, then reads password, then attempts
+# to login and parse the page.
+#
+sub main {
+
     check_args();
     my $username = $ARGV[0];
     my $password = read_passwd();
@@ -86,4 +113,5 @@ sub main() {
     parse_page($content);
 }
 
+# Run main.
 main();

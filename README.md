@@ -2,14 +2,15 @@ wcu_balance_script
 ==================
 author:  Andriy Rudyk
 date:    22.1.2013
-version: 1.2 pre-release
+version: 1.3 RC
 
 Perl Dependencies:
 
 WWW::Mechanize
 HTML::TreeBuilder
 
-Script that allows a WCU student to check his/her mycat balance
+Script that allows a WCU student to check his/her mycat account details, such
+as declining balance, number of block meals, etc...
 
 TODO:
-- Save 92-num & pass in .wcubalrc file
+- Save encrypted 92-num & pass in .wcubalrc file (optional)
