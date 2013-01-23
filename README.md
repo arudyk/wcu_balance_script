@@ -2,7 +2,7 @@ wcu_balance_script
 ==================
 author:  Andriy Rudyk
 date:    22.1.2013
-version: 1.1 alpha
+version: 1.2 pre-release
 
 Perl Dependencies:
 

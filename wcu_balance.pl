@@ -3,7 +3,7 @@
 # 
 # author:  Andriy Rudyk (arudyk.dev@gmail.com)
 # date:    22.1.2013
-# version: 1.1 beta
+# version: 1.2 beta pre-release
 #
 # wcu_balance.pl <92-number> <PIN>
 #
@@ -62,17 +62,14 @@ sub parse_page {
     $tree->parse_content($_[0]);
     my @table_items = $tree->look_down('_tag' => 'strong');
 
-    #foreach (@table_items) {
-    #    print $_->content_list;
-    #    print "\n";
-    #}
     shift @table_items;
     while (my $element = shift @table_items) {
-        if (grep /Balance/, $element->content_list) {
+        if ((join "", $element->content_list) =~ m/Balance/) {
             $element = shift @table_items;
         }
         print $element->content_list;
-        print " => ";
+        my $space_size = 21 - length(join "", $element->content_list);
+        print " " x $space_size;
         $element = shift @table_items;
         print $element->content_list;
         print "\n";
@@ -81,8 +78,12 @@ sub parse_page {
     $tree->delete;
 }
 
-check_args();
-my $us = $ARGV[0];
-my $pa = read_passwd();
-my $con = login_get_page($us, $pa);
-parse_page($con);
+sub main() {
+    check_args();
+    my $username = $ARGV[0];
+    my $password = read_passwd();
+    my $content = login_get_page($username, $password);
+    parse_page($content);
+}
+
+main();
