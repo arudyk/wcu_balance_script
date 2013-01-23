@@ -2,8 +2,8 @@
 
 #
 # author:  Andriy Rudyk (arudyk.dev@gmail.com)
-# date:    22.1.2013
-# version: 1.3 RC
+# date:    23.1.2013
+# version: 1.4
 #
 # wcu_balance.pl <92-number> <PIN>
 #
@@ -28,7 +28,7 @@ my $user_agent   = "Mozzila/5.0";
 #
 sub check_args {
     my $num_args = $#ARGV + 1;
-    if ($num_args != 1 || $ARGV[0] !~ m/92/) {
+    if ($num_args != 1 || $ARGV[0] !~ m/^92/) {
         print $usage_string;
         exit;
     }
