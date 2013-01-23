@@ -31,10 +31,10 @@ sub check_args {
 
 sub read_passwd {
     print "Enter your MyCat pin: ";
-    ReadModel('noecho'); # dont echo password
+    ReadMode('noecho'); # dont echo password
     chomp(my $pass = <STDIN>);
-    ReadModel(0);        # switch back to normal
-    
+    ReadMode(0);        # switch back to normal
+    print "\n";
     return $pass;
 }
 
@@ -74,7 +74,8 @@ sub parse_page {
     $tree->delete;
 }
 
+check_args();
 my $us = $ARGV[0];
-my $pa = $ARGV[1];
+my $pa = read_passwd();
 my $con = login_get_page($us, $pa);
 parse_page($con);
