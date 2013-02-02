@@ -5,7 +5,7 @@
 # date:    23.1.2013
 # version: 1.4
 #
-# wcu_balance.pl <92-number> <PIN>
+# wcu_balance.pl <92-number>
 #
 # Retrives WCU mycat balance using the login credentials provided.
 #
