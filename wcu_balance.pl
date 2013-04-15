@@ -19,7 +19,7 @@ use Term::ReadKey;
 use WWW::Mechanize;
 
 my $usage_string = "usage: ./wcu_balance.pl <92-number>\n";
-my $mycat_url    = "http://www.wcu.edu/11407.asp";
+my $mycat_url    = "http://www.wcu.edu/about-wcu/campus-services/catcard-office/catcard-balance-inquiry.asp";
 my $user_agent   = "Mozzila/5.0";
 
 #
@@ -63,7 +63,7 @@ sub login_get_page {
     $mech->get($mycat_url);
 
     my $page = $mech->submit_form(
-        form_number => 3,
+        form_number => 2,
         fields => {
             id => $_[0],
             PIN => $_[1]
